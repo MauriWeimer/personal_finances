@@ -10,8 +10,5 @@ dependencies:
   flutter:
     sdk: flutter
 
-  presentation:
-    path: ../presentation 
-
 flutter:
   uses-material-design: true

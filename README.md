@@ -1,4 +1,4 @@
-# mobile_app
+# personal_finances
 
 A new Flutter project.
 

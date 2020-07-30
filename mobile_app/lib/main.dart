@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/presentation.dart';
+
+import 'src/navigator/routes.dart';
+import 'src/ui/theme/style.dart';
  
 void main() => runApp(MyApp());
  
