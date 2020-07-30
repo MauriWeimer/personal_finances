@@ -18,11 +18,10 @@ class LateralMenu<T> extends StatefulWidget {
     Key key,
     @required this.items,
     this.initialItem = 0,
-    @required this.onItemChanged,
+    this.onItemChanged,
     this.topButton,
     this.bottomButton,
   })  : assert(items != null),
-        assert(onItemChanged != null),
         super(key: key);
 
   @override
@@ -32,16 +31,16 @@ class LateralMenu<T> extends StatefulWidget {
 class _LateralMenuState extends State<LateralMenu> {
   PageController pageController;
 
-  int currentItem;
+  int currentIndex;
 
   @override
   void initState() {
     super.initState();
 
-    currentItem = widget.initialItem;
+    currentIndex = widget.initialItem;
 
     pageController = PageController(
-      initialPage: currentItem,
+      initialPage: currentIndex,
       viewportFraction: 0.2,
     );
   }
@@ -95,7 +94,7 @@ class _LateralMenuState extends State<LateralMenu> {
                 Text(
                   '${widget.items[i]}',
                   style: TextStyle(
-                    color: (i == currentItem)
+                    color: (i == currentIndex)
                         ? Colors.white
                         : Colors.white.withOpacity(0.5),
                   ),
@@ -107,7 +106,7 @@ class _LateralMenuState extends State<LateralMenu> {
         onPageChanged: (i) {
           widget.onItemChanged(i);
 
-          setState(() => currentItem = i);
+          setState(() => currentIndex = i);
         },
       );
 }
