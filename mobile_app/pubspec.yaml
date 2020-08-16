@@ -10,7 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_bloc: ^6.0.1
+  presentation_core:
+    path: ../../core/presentation_core
 
 flutter:
   uses-material-design: true
