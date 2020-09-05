@@ -57,7 +57,7 @@ class _LateralMenuState extends State<LateralMenu> {
     return SizedBox(
       width: 48.0,
       child: Material(
-        color: primaryColor,
+        color: kPrimaryColor,
         child: Column(
           children: [
             if (widget.topButton != null) widget.topButton,

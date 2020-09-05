@@ -1,10 +1,10 @@
 import '../ui/pages/home/home_page.dart';
 import '../ui/pages/add_expenses/add_expenses_page.dart';
 
-final homeRoute = '/home';
-final addExpensesRoute = '/add_expenses';
-
-final routes = {
-  homeRoute : (_) => HomePage(),
-  addExpensesRoute : (_) => AddExpensesPage(),
+final kRoutes = {
+  kHomeRoute: (_) => HomePage(),
+  kAddExpensesRoute: (_) => AddExpensesPage(),
 };
+
+const kHomeRoute = '/home';
+const kAddExpensesRoute = '/add_expenses';

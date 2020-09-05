@@ -1,7 +1,7 @@
 name: personal_finances
 description: Personal project to test Clean Architecture structure.
 
-version: 1.0.0+1
+version: 1.1.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,8 +10,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #core  
   presentation_core:
     path: ../../core/presentation_core
+
+  application:
+    path: ../application
+  domain:
+    path: ../domain
+
+  flutter_hooks: ^0.13.2
 
 flutter:
   uses-material-design: true

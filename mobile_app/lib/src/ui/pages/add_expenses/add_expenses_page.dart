@@ -14,10 +14,10 @@ class AddExpensesPage extends StatelessWidget {
           children: [
             LateralMenu(
               bottomButton: MenuButton(
-                backgroundColor: scaffoldBackgroundColor,
+                backgroundColor: kScaffoldBackgroundColor,
                 icon: Icon(
                   Icons.chevron_left,
-                  color: primaryColor,
+                  color: kPrimaryColor,
                 ),
                 onTap: () => Navigator.of(context).pop(),
               ),
@@ -81,7 +81,7 @@ class AddExpensesPage extends StatelessWidget {
               height: 16.0,
             ),
             Divider(
-              color: textColor,
+              color: kTextColor,
               height: 1.0,
               thickness: 1.0,
             ),
@@ -117,7 +117,7 @@ class AddExpensesPage extends StatelessWidget {
                 border: InputBorder.none,
                 labelText: 'Description',
                 labelStyle: TextStyle(
-                  color: textColor,
+                  color: kTextColor,
                 ),
               ),
               style: TextStyle(

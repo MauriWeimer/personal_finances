@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Finances',
       debugShowCheckedModeBanner: false,
-      theme: theme,
-      initialRoute: homeRoute,
-      routes: routes,
+      theme: kTheme,
+      initialRoute: kHomeRoute,
+      routes: kRoutes,
     );
   }
 }

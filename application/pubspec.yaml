@@ -1,0 +1,11 @@
+name: application
+
+environment:
+  sdk: '>=2.7.0 <3.0.0'
+
+dependencies:
+  application_core:
+    path: ../../core/application_core
+
+  domain:
+    path: ../domain

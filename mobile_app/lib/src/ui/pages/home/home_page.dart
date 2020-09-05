@@ -1,51 +1,48 @@
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:presentation_core/ploc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:application/application.dart';
+import 'package:presentation_core/presentation.dart';
 
-import '../../../navigator/routes.dart';
-import '../../widgets/lateral_menu/lateral_menu.dart';
-import 'ploc/home_ploc.dart';
 import 'widgets/bars_chart.dart';
 import 'widgets/expenses_list.dart';
+import '../../widgets/lateral_menu/lateral_menu.dart';
+import '../../../navigator/routes.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final bloc = useBloc(bloc: HomeBloc());
+
     return Scaffold(
       body: SafeArea(
-        child: PlocProvider<HomePloc>(
-          create: (context) => HomePloc(),
-          child: Builder(
-            builder: (context) => FutureBuilder<List<int>>(
-              future: PlocProvider.of<HomePloc>(context).getDates(),
-              //TODO: crear widget future igual al stream ...
+        child: Row(
+          children: [
+            FutureBuilder<List<int>>(
+              future: bloc.getDates(),
               builder: (_, snapshot) => (!snapshot.hasData)
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Row(
-                      children: [
-                        _menu(
-                          context,
-                          snapshot.data,
-                        ),
-                        Expanded(
-                          child: PlocBuilder<HomePloc, HomeState>(
-                            loadingBuilder: (_) => Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            builder: (context, state) => _body(state),
-                          ),
-                        ),
-                      ],
-                    ),
+                  : _menu(context, bloc, snapshot.data),
             ),
-          ),
+            Expanded(
+              child: BlocBuilder<HomeBloc, HomeState>(
+                bloc: bloc,
+                loadingBuilder: (_) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+                builder: (context, state) => _body(state),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _menu(BuildContext context, List<int> dates) => LateralMenu(
+  Widget _menu(BuildContext context, HomeBloc bloc, List<int> dates) =>
+      LateralMenu(
         topButton: MenuButton(
           icon: Icon(
             Icons.power_settings_new,
@@ -57,14 +54,16 @@ class HomePage extends StatelessWidget {
             Icons.add,
             color: Colors.white,
           ),
-          onTap: () => Navigator.of(context).pushNamed(addExpensesRoute),
+          onTap: () => Navigator.of(context).pushNamed(kAddExpensesRoute),
         ),
         items: dates,
         initialItem: dates.last,
-        onItemChanged: PlocProvider.of<HomePloc>(context).searchExpensesByDate,
+        onItemChanged: (value) => bloc.searchExpensesByDate(
+          Date(year: 2020, month: 08, day: 01),
+        ),
       );
 
-  Widget _body(HomeState state) => Padding(
+  Widget _body(HomeState data) => Padding(
         padding: const EdgeInsets.fromLTRB(
           24.0,
           24.0,
@@ -81,7 +80,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Text(
-              '\$${state.totalExpenses}',
+              '\$${data.totalExpenses}',
               style: TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.w600,
@@ -92,14 +91,14 @@ class HomePage extends StatelessWidget {
               height: 32.0,
             ),
             BarsChart(
-              valueByGroup: state.expenseStatistics,
+              valueByGroup: data.statistics,
             ),
             SizedBox(
               height: 32.0,
             ),
             Expanded(
               child: ExpensesList(
-                valuesByGroup: state.expenseValues,
+                expensesPerDay: data.perDay,
               ),
             ),
           ],

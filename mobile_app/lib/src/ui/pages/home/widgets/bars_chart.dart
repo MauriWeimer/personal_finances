@@ -33,7 +33,7 @@ class BarsChart extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: value,
                 minHeight: 8.0,
-                backgroundColor: primaryColor.withOpacity(0.1),
+                backgroundColor: kPrimaryColor.withOpacity(0.1),
               ),
             ),
           ),

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-final theme = ThemeData(
-  primarySwatch: primaryColor,
-  scaffoldBackgroundColor: scaffoldBackgroundColor,
+final kTheme = ThemeData(
+  primarySwatch: kPrimaryColor,
+  scaffoldBackgroundColor: kScaffoldBackgroundColor,
   fontFamily: 'Montserrat',
   textTheme: TextTheme().apply(
-    bodyColor: textColor,
-    displayColor: textColor,
+    bodyColor: kTextColor,
+    displayColor: kTextColor,
   ),
 );
 
-final scaffoldBackgroundColor = Colors.white;
+const kScaffoldBackgroundColor = Colors.white;
 
-final primaryColor = MaterialColor(
+const kPrimaryColor = MaterialColor(
   0xFF1C6DF9,
   {
     50: Color(0xFF1C6DF9),
@@ -28,4 +28,4 @@ final primaryColor = MaterialColor(
   },
 );
 
-final textColor = Color(0xFF313131);
+const kTextColor = Color(0xFF313131);

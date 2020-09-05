@@ -1,29 +1,30 @@
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 import '../../../theme/style.dart';
 
 class ExpensesList extends StatelessWidget {
-  final Map<String, List<double>> valuesByGroup;
+  final Map<Date, List<ExpenseEntity>> expensesPerDay;
   final double itemHeight;
 
   const ExpensesList({
     Key key,
-    @required this.valuesByGroup,
+    @required this.expensesPerDay,
     this.itemHeight = 48.0,
-  })  : assert(valuesByGroup != null),
+  })  : assert(expensesPerDay != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.only(bottom: 24.0),
-      itemCount: valuesByGroup.length,
+      itemCount: expensesPerDay.length,
       itemBuilder: (_, index) {
-        final values = valuesByGroup[valuesByGroup.keys.elementAt(index)];
+        final values = expensesPerDay[expensesPerDay.keys.elementAt(index)];
 
         return Column(
           children: [
-            _itemTitle(valuesByGroup.keys.elementAt(index)),
+            _itemTitle(expensesPerDay.keys.elementAt(index)),
             SizedBox(
               height: 8.0,
             ),
@@ -39,7 +40,7 @@ class ExpensesList extends StatelessWidget {
                     height: 16.0,
                     width: 1.0,
                     margin: EdgeInsets.only(left: itemHeight * 0.5),
-                    color: primaryColor,
+                    color: kPrimaryColor,
                   ),
                 ),
               ),
@@ -53,11 +54,11 @@ class ExpensesList extends StatelessWidget {
     );
   }
 
-  Widget _itemTitle(String title) => Row(
+  Widget _itemTitle(Date date) => Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            title,
+            '${date.day}',
             style: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
@@ -70,13 +71,13 @@ class ExpensesList extends StatelessWidget {
             child: Container(
               height: 1.0,
               margin: const EdgeInsets.only(bottom: 4.0),
-              color: textColor,
+              color: kTextColor,
             ),
           ),
         ],
       );
 
-  Widget _item(double value) => SizedBox(
+  Widget _item(ExpenseEntity expense) => SizedBox(
         height: itemHeight,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,12 +88,12 @@ class ExpensesList extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 1.0,
-                    color: primaryColor,
+                    color: kPrimaryColor,
                   ),
                 ),
                 child: Icon(
                   Icons.font_download,
-                  color: primaryColor,
+                  color: kPrimaryColor,
                 ),
               ),
             ),
@@ -112,7 +113,7 @@ class ExpensesList extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Description',
+                      expense.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -127,7 +128,7 @@ class ExpensesList extends StatelessWidget {
               heightFactor: 1.0,
               child: Center(
                 child: Text(
-                  '\$$value',
+                  '\$${expense.total}',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

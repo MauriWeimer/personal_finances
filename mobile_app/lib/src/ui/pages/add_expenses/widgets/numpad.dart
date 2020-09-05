@@ -41,7 +41,7 @@ class Numpad extends StatelessWidget {
               _iconButton(
                 Icons.add,
                 () {},
-                primaryColor,
+                kPrimaryColor,
               ),
             ],
           ),
@@ -57,7 +57,7 @@ class Numpad extends StatelessWidget {
             child: Text(
               '$number',
               style: TextStyle(
-                color: primaryColor,
+                color: kPrimaryColor,
                 fontSize: 32.0,
                 fontWeight: FontWeight.w600,
               ),
@@ -74,7 +74,7 @@ class Numpad extends StatelessWidget {
   Widget _iconButton(IconData icon, VoidCallback onTap,
           [Color backgroundColor]) =>
       Material(
-        color: backgroundColor ?? scaffoldBackgroundColor,
+        color: backgroundColor ?? kScaffoldBackgroundColor,
         child: AspectRatio(
           aspectRatio: 1.0,
           child: InkWell(
@@ -82,8 +82,8 @@ class Numpad extends StatelessWidget {
               icon,
               size: 32.0,
               color: (backgroundColor == null)
-                  ? primaryColor
-                  : scaffoldBackgroundColor,
+                  ? kPrimaryColor
+                  : kScaffoldBackgroundColor,
             ),
             onTap: () {
               HapticFeedback.lightImpact();

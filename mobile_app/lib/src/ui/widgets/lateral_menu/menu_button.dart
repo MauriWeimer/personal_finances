@@ -18,7 +18,7 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: backgroundColor ?? primaryColor,
+      color: backgroundColor ?? kPrimaryColor,
       child: AspectRatio(
         aspectRatio: 1.0,
         child: InkWell(
