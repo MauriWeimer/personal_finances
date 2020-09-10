@@ -1,41 +1,48 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:application/application.dart';
 import 'package:presentation_core/presentation.dart';
+import 'package:di/di.dart';
 
 import 'widgets/bars_chart.dart';
 import 'widgets/expenses_list.dart';
 import '../../widgets/lateral_menu/lateral_menu.dart';
 import '../../../navigator/routes.dart';
 
-class HomePage extends HookWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = useBloc(bloc: HomeBloc());
-
     return Scaffold(
       body: SafeArea(
-        child: Row(
-          children: [
-            FutureBuilder<List<int>>(
-              future: bloc.getDates(),
-              builder: (_, snapshot) => (!snapshot.hasData)
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : _menu(context, bloc, snapshot.data),
-            ),
-            Expanded(
-              child: BlocBuilder<HomeBloc, HomeState>(
-                bloc: bloc,
-                loadingBuilder: (_) => Center(
-                  child: CircularProgressIndicator(),
-                ),
-                builder: (context, state) => _body(state),
-              ),
-            ),
-          ],
+        child: BlocProvider<HomeBloc>(
+          create: (_) => HomeBloc(g()),
+          child: Builder(
+            builder: (context) {
+              final bloc = BlocProvider.of<HomeBloc>(context);
+
+              return Row(
+                children: [
+                  FutureBuilder<List<int>>(
+                    future: bloc.getDates(),
+                    builder: (_, snapshot) => (!snapshot.hasData)
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : _menu(context, bloc, snapshot.data),
+                  ),
+                  Expanded(
+                    child: BlocBuilder<HomeBloc, HomeState>(
+                      bloc: bloc,
+                      loadingBuilder: (_) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      builder: (_, state) => _body(state),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

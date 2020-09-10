@@ -1,13 +1,11 @@
-import '../../values/date.dart';
-import './expense_entity.dart';
+import '../valueobjects/date.dart';
+import './expense.dart';
 
-export './expense_entity.dart';
-
-class ExpensesEntity {
+class Expenses {
   final Date date;
-  final List<ExpenseEntity> expenses;
+  final List<Expense> expenses;
 
-  ExpensesEntity({this.date, this.expenses});
+  Expenses({this.date, this.expenses});
 
   double get total => expenses.fold(
         0.0,
@@ -23,7 +21,7 @@ class ExpensesEntity {
         '26-30': 0.2,
       };
 
-  Map<Date, List<ExpenseEntity>> get perDay =>
+  Map<Date, List<Expense>> get perDay =>
       expenses.fold({}, (perDay, expense) {
         if (!perDay.containsKey(expense.date))
           perDay[expense.date] = [expense];

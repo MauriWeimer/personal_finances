@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:di/di.dart' as di;
 
 import 'src/navigator/routes.dart';
 import 'src/ui/theme/style.dart';
  
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
+
+  runApp(MyApp());
+}
  
 class MyApp extends StatelessWidget {
   @override
@@ -12,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Personal Finances',
       debugShowCheckedModeBanner: false,
       theme: kTheme,
-      initialRoute: kHomeRoute,
+      initialRoute: kSplashRoute,
       routes: kRoutes,
     );
   }

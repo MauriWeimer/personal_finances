@@ -1,0 +1,12 @@
+name: di
+
+environment:
+  sdk: '>=2.7.0 <3.0.0'
+
+dependencies:
+  data:
+    path: ../data  
+  domain:
+    path: ../domain
+
+  get_it: ^4.0.4

@@ -18,8 +18,8 @@ dependencies:
     path: ../application
   domain:
     path: ../domain
-
-  flutter_hooks: ^0.13.2
+  di:
+    path: ../di
 
 flutter:
   uses-material-design: true

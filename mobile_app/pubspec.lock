@@ -15,6 +15,13 @@ packages:
       relative: true
     source: path
     version: "1.1.0"
+  async:
+    dependency: transitive
+    description:
+      name: async
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.4.2"
   characters:
     dependency: transitive
     description:
@@ -29,6 +36,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.2"
+  data:
+    dependency: transitive
+    description:
+      path: "../data"
+      relative: true
+    source: path
+    version: "0.0.0"
+  di:
+    dependency: "direct main"
+    description:
+      path: "../di"
+      relative: true
+    source: path
+    version: "0.0.0"
   domain:
     dependency: "direct main"
     description:
@@ -41,13 +62,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_hooks:
-    dependency: "direct main"
+  get_it:
+    dependency: transitive
     description:
-      name: flutter_hooks
+      name: get_it
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.2"
+    version: "4.0.4"
   meta:
     dependency: transitive
     description:

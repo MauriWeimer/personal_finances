@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../theme/style.dart';
 
 class ExpensesList extends StatelessWidget {
-  final Map<Date, List<ExpenseEntity>> expensesPerDay;
+  final Map<Date, List<Expense>> expensesPerDay;
   final double itemHeight;
 
   const ExpensesList({
@@ -77,7 +77,7 @@ class ExpensesList extends StatelessWidget {
         ],
       );
 
-  Widget _item(ExpenseEntity expense) => SizedBox(
+  Widget _item(Expense expense) => SizedBox(
         height: itemHeight,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -32,9 +32,9 @@ export 'home_state.dart';
 // }
 
 class HomeBloc extends Bloc<HomeState> {
-  final GetExpensesByDate _getExpensesByDate = GetExpensesByDate();
+  final GetExpensesByDate _getExpensesByDate;
 
-  // HomeBloc(this._getExpensesByDate);
+  HomeBloc(this._getExpensesByDate);
 
   Future<List<int>> getDates() async {
     return await Future.delayed(
@@ -44,11 +44,18 @@ class HomeBloc extends Bloc<HomeState> {
     );
   }
 
+  @override
+  Future<void> close() {
+    print('bloc disposed');
+
+    return super.close();
+  }
+
   void searchExpensesByDate(Date date) {
 
     //TODO: ver si es necesario SOLO USAR streams
 
-    executeStream<ExpensesEntity>(
+    executeStream<Expenses>(
       useCase: _getExpensesByDate.execute(date),
       then: (expenses) => emit(HomeState(
         totalExpenses: expenses.total,
