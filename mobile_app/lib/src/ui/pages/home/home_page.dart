@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         );
 
-                      bloc.searchExpensesByDate(snapshot.data.first);
+                      bloc.searchExpensesByDate(snapshot.data.last);
 
                       return _menu(context, bloc, snapshot.data);
                     },
@@ -41,7 +41,10 @@ class HomePage extends StatelessWidget {
                       loadingBuilder: (_) => Center(
                         child: CircularProgressIndicator(),
                       ),
-                      builder: (_, state) => _body(state),
+                      builder: (_, state) => state.map(
+                        success: (state) => _body(state),
+                        empty: () => Center(child: Text('empty')),
+                      ),
                     ),
                   ),
                 ],
@@ -70,12 +73,18 @@ class HomePage extends StatelessWidget {
         ),
         children: List.generate(
           dates.length,
-          (i) => Text('${dates[i].year}\n${dates[i].month}'),
+          (i) => Text(
+            '${dates[i].year}\n${dates[i].month}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
+        initialIndex: dates.length - 1,
         onIndexChanged: (value) => bloc.searchExpensesByDate(dates[value]),
       );
 
-  Widget _body(HomeState data) => Padding(
+  Widget _body(SuccesState data) => Padding(
         padding: const EdgeInsets.fromLTRB(
           24.0,
           24.0,

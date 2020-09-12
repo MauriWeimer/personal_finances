@@ -13,6 +13,9 @@ class Date {
           (other.month == month) &&
           (other.day == day));
 
+  int get daysInMonth =>
+      DateTime(year, month + 1).difference(DateTime(year, month, 1)).inDays;
+
   @override
   int get hashCode => year.hashCode ^ month.hashCode ^ day.hashCode;
 }

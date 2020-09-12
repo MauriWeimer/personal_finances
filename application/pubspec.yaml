@@ -9,3 +9,5 @@ dependencies:
 
   domain:
     path: ../domain
+
+  meta: ^1.2.3

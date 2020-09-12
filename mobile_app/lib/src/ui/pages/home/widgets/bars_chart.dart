@@ -19,7 +19,10 @@ class BarsChart extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           valueByGroup.length,
-          (i) => _bar(valueByGroup[valueByGroup.keys.elementAt(i)], '0$i-0$i'),
+          (i) => _bar(
+            valueByGroup[valueByGroup.keys.elementAt(i)],
+            valueByGroup.keys.elementAt(i),
+          ),
         ),
       ),
     );

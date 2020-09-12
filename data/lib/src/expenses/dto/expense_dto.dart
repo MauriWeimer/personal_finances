@@ -5,13 +5,13 @@ import '../../dates/dto/date_dto.dart';
 class ExpenseDto {
   final String category;
   final DateDto date;
-  final double total;
+  final double value;
   final String description;
 
   ExpenseDto({
     this.category,
     this.date,
-    this.total,
+    this.value,
     this.description,
   });
 
@@ -22,7 +22,7 @@ class ExpenseDto {
           month: map['month'],
           day: map['day'],
         ),
-        total: (map['total'] as num).toDouble(),
+        value: (map['value'] as num).toDouble(),
         description: map['description'],
       );
 }
@@ -31,7 +31,7 @@ extension ExpenseDtoX on ExpenseDto {
   Expense toDomain() => Expense(
         date: date.toDomain(),
         category: Category(name: category, icon: ''),
-        total: total,
+        value: value,
         description: description,
       );
 }

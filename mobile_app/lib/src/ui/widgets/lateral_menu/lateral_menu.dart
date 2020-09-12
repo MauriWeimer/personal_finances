@@ -85,21 +85,15 @@ class _LateralMenuState extends State<LateralMenu> {
         controller: pageController,
         scrollDirection: Axis.vertical,
         itemCount: widget.children.length,
-        itemBuilder: (_, i) {
-          return RotatedBox(
-            quarterTurns: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                widget.children.length,
-                (i) => Opacity(
-                  opacity: (i == currentIndex) ? 1.0 : 0.5,
-                  child: widget.children[i],
-                ),
-              ),
+        itemBuilder: (_, i) => RotatedBox(
+          quarterTurns: 3,
+          child: Center(
+            child: Opacity(
+              opacity: (i == currentIndex) ? 1.0 : 0.5,
+              child: widget.children[i],
             ),
-          );
-        },
+          ),
+        ),
         onPageChanged: (i) {
           widget.onIndexChanged(i);
 

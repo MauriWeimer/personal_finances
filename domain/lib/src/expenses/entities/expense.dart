@@ -4,8 +4,8 @@ import '../valueobjects/category.dart';
 class Expense {
   final Date date;
   final Category category;
-  final double total;
+  final double value;
   final String description;
 
-  Expense({this.date, this.category, this.total, this.description});
+  Expense({this.date, this.category, this.value, this.description});
 }

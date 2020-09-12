@@ -11,8 +11,8 @@ class DatesRepositoryImpl implements DatesRepository {
   @override
   Future<List<Date>> getDates() => _firebaseFirestore
           .collection('expenses')
-          .orderBy('year', descending: true)
-          .orderBy('month', descending: true)
+          .orderBy('year')
+          .orderBy('month')
           .limit(1)
           .get()
           .then(
@@ -20,18 +20,17 @@ class DatesRepositoryImpl implements DatesRepository {
           final firstDate = DateDto.fromFirestore(snapshot).toDomain();
           final now = DateTime.now();
 
-          var nextDate = Date(
-            year: firstDate.year + ((firstDate.month + 1 == 12) ? 1 : 0),
-            month: firstDate.month + 1,
-          );
+          var nextDate = Date(year: firstDate.year, month: firstDate.month);
           final dates = [nextDate];
 
-          while (nextDate.year != now.year && nextDate.month != now.month) {
-            dates.add(nextDate);
+          while (nextDate.year != now.year || nextDate.month != now.month) {
+            final nextMonth = nextDate.month + 1;
             nextDate = Date(
-              year: nextDate.year + ((nextDate.month + 1 == 12) ? 1 : 0),
-              month: nextDate.month + 1,
+              year: nextDate.year + ((nextMonth == 12) ? 1 : 0),
+              month: nextMonth,
             );
+
+            dates.add(nextDate);
           }
 
           return dates;

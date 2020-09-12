@@ -128,7 +128,7 @@ class ExpensesList extends StatelessWidget {
               heightFactor: 1.0,
               child: Center(
                 child: Text(
-                  '\$${expense.total}',
+                  '\$${expense.value}',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

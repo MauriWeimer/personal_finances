@@ -1,8 +1,8 @@
 import 'package:application_core/bloc.dart';
 import 'package:domain/domain.dart';
 
-import 'home_state.dart';
-export 'home_state.dart';
+import './state/home_state.dart';
+export './state/home_state.dart';
 
 class HomeBloc extends Bloc<HomeState> {
   final GetAllDates _getAllDates;
@@ -13,11 +13,16 @@ class HomeBloc extends Bloc<HomeState> {
   Future<List<Date>> getDates() => _getAllDates.execute();
 
   void searchExpensesByDate(Date date) => execute<Expenses>(
-        useCase: _getExpensesByDate.execute(Date(year: 2020, month: 9)),
-        then: (expenses) => emit(HomeState(
-          totalExpenses: expenses.total,
-          statistics: expenses.statistics,
-          perDay: expenses.perDay,
-        )),
+        useCase: _getExpensesByDate.execute(date),
+        then: (expenses) {
+          if (expenses.expenses.isEmpty)
+            emit(HomeState.empty());
+          else
+            emit(HomeState.success(
+              totalExpenses: expenses.total,
+              statistics: expenses.statistics,
+              perDay: expenses.perDay,
+            ));
+        },
       );
 }
