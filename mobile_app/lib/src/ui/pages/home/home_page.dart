@@ -15,20 +15,25 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: BlocProvider<HomeBloc>(
-          create: (_) => HomeBloc(g()),
+          create: (_) => HomeBloc(g(), g()),
           child: Builder(
             builder: (context) {
               final bloc = BlocProvider.of<HomeBloc>(context);
 
               return Row(
                 children: [
-                  FutureBuilder<List<int>>(
+                  FutureBuilder<List<Date>>(
                     future: bloc.getDates(),
-                    builder: (_, snapshot) => (!snapshot.hasData)
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : _menu(context, bloc, snapshot.data),
+                    builder: (_, snapshot) {
+                      if (!snapshot.hasData)
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+
+                      bloc.searchExpensesByDate(snapshot.data.first);
+
+                      return _menu(context, bloc, snapshot.data);
+                    },
                   ),
                   Expanded(
                     child: BlocBuilder<HomeBloc, HomeState>(
@@ -48,7 +53,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _menu(BuildContext context, HomeBloc bloc, List<int> dates) =>
+  Widget _menu(BuildContext context, HomeBloc bloc, List<Date> dates) =>
       LateralMenu(
         topButton: MenuButton(
           icon: Icon(
@@ -63,11 +68,11 @@ class HomePage extends StatelessWidget {
           ),
           onTap: () => Navigator.of(context).pushNamed(kAddExpensesRoute),
         ),
-        items: dates,
-        initialItem: dates.last,
-        onItemChanged: (value) => bloc.searchExpensesByDate(
-          Date(year: 2020, month: 08, day: 01),
+        children: List.generate(
+          dates.length,
+          (i) => Text('${dates[i].year}\n${dates[i].month}'),
         ),
+        onIndexChanged: (value) => bloc.searchExpensesByDate(dates[value]),
       );
 
   Widget _body(HomeState data) => Padding(

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:di/di.dart' as di;
 
@@ -6,6 +7,8 @@ import 'src/ui/theme/style.dart';
  
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
   await di.init();
 
   runApp(MyApp());

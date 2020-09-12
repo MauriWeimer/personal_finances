@@ -4,5 +4,10 @@ environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
+  flutter:
+    sdk: flutter
+
   domain:
     path: ../domain
+
+  cloud_firestore: ^0.14.0+2

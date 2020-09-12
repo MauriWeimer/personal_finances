@@ -107,7 +107,7 @@ class ExpensesList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Category',
+                      expense.category.name,
                       style: TextStyle(
                         fontSize: 12.0,
                       ),

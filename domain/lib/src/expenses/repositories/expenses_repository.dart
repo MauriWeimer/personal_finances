@@ -1,5 +1,5 @@
 import '../entities/expenses.dart';
-import '../valueobjects/date.dart';
+import '../../date/valueobjects/date.dart';
 
 abstract class ExpensesRepository {
   Stream<Expenses> getByDate(Date date);

@@ -5,23 +5,23 @@ import 'menu_button.dart';
 
 export 'menu_button.dart';
 
-typedef OnItemChanged = void Function(int item);
+typedef OnIindexChanged = void Function(int item);
 
-class LateralMenu<T> extends StatefulWidget {
-  final List<T> items;
-  final int initialItem;
-  final OnItemChanged onItemChanged;
+class LateralMenu extends StatefulWidget {
+  final List<Widget> children;
+  final int initialIndex;
+  final OnIindexChanged onIndexChanged;
   final MenuButton topButton;
   final MenuButton bottomButton;
 
   const LateralMenu({
     Key key,
-    @required this.items,
-    this.initialItem = 0,
-    this.onItemChanged,
+    @required this.children,
+    this.initialIndex = 0,
+    this.onIndexChanged,
     this.topButton,
     this.bottomButton,
-  })  : assert(items != null),
+  })  : assert(children != null),
         super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class _LateralMenuState extends State<LateralMenu> {
   void initState() {
     super.initState();
 
-    currentIndex = widget.initialItem;
+    currentIndex = widget.initialIndex;
 
     pageController = PageController(
       initialPage: currentIndex,
@@ -84,27 +84,24 @@ class _LateralMenuState extends State<LateralMenu> {
   Widget items() => PageView.builder(
         controller: pageController,
         scrollDirection: Axis.vertical,
-        itemCount: widget.items.length,
+        itemCount: widget.children.length,
         itemBuilder: (_, i) {
           return RotatedBox(
             quarterTurns: 3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${widget.items[i]}',
-                  style: TextStyle(
-                    color: (i == currentIndex)
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.5),
-                  ),
+              children: List.generate(
+                widget.children.length,
+                (i) => Opacity(
+                  opacity: (i == currentIndex) ? 1.0 : 0.5,
+                  child: widget.children[i],
                 ),
-              ],
+              ),
             ),
           );
         },
         onPageChanged: (i) {
-          widget.onItemChanged(i);
+          widget.onIndexChanged(i);
 
           setState(() => currentIndex = i);
         },

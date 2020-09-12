@@ -1,11 +1,10 @@
-import '../valueobjects/date.dart';
+import '../../date/valueobjects/date.dart';
 import './expense.dart';
 
 class Expenses {
-  final Date date;
   final List<Expense> expenses;
 
-  Expenses({this.date, this.expenses});
+  Expenses({this.expenses});
 
   double get total => expenses.fold(
         0.0,

@@ -22,15 +22,15 @@ class AddExpensesPage extends StatelessWidget {
                 onTap: () => Navigator.of(context).pop(),
               ),
               //TODO: items deberia ser una lista de Widgets ...
-              items: [
-                'Categoria',
-                'Categoria',
-                'Categoria',
-                'Categoria',
-                'Categoria',
+              children: [
+                Text('Categoria'),
+                Text('Categoria'),
+                Text('Categoria'),
+                Text('Categoria'),
+                Text('Categoria'),
               ],
-              initialItem: 1,
-              onItemChanged: (item) => print('item: $item'),
+              initialIndex: 1,
+              onIndexChanged: (item) => print('item: $item'),
             ),
             Expanded(
               child: _body(),
