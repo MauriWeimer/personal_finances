@@ -11,12 +11,29 @@ Future<void> init() async {
     () => FirebaseFirestore.instance,
   );
 
+  //Datasources
+  g.registerLazySingleton<DatesRemoteDataSource>(
+    () => DatesFirestoreDataSource(g()),
+  );
+  g.registerLazySingleton<ExpensesRemoteDataSource>(
+    () => ExpensesFirestoreDataSource(g()),
+  );
+  g.registerLazySingleton<CategoriesRemoteDataSource>(
+    () => CategoriesFirestoreDataSource(g()),
+  );
+  g.registerLazySingleton<CategoriesLocalDataSource>(
+    () => CategoriesHiveDataSource(),
+  );
+
   //Repositories
   g.registerLazySingleton<DatesRepository>(
     () => DatesRepositoryImpl(g()),
   );
   g.registerLazySingleton<ExpensesRepository>(
     () => ExpensesRepositoryImpl(g()),
+  );
+  g.registerLazySingleton<CategoriesRepository>(
+    () => CategoriesRepositoryImpl(g(), g()),
   );
 
   //Usecases
@@ -25,5 +42,11 @@ Future<void> init() async {
   );
   g.registerLazySingleton(
     () => GetExpensesByDate(g()),
+  );
+  g.registerLazySingleton(
+    () => GetCategories(g()),
+  );
+  g.registerLazySingleton(
+    () => SaveCategories(g()),
   );
 }

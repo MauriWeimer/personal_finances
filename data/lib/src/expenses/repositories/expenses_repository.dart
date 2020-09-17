@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
-import '../mapping/expenses_mapper.dart';
-import '../datasources/expenses_data_source.dart';
+import '../datasources/remote/expenses_remote_data_source.dart';
 
 class ExpensesRepositoryImpl implements ExpensesRepository {
-  final ExpensesDataSource _expensesDataSource;
+  final ExpensesRemoteDataSource _expensesRemoteDataSource;
 
-  const ExpensesRepositoryImpl(this._expensesDataSource);
+  const ExpensesRepositoryImpl(this._expensesRemoteDataSource);
 
   @override
-  Stream<Expenses> getByDate(Date date) => _expensesDataSource.getByDate(date);
+  Stream<Expenses> getByDate(Date date) =>
+      _expensesRemoteDataSource.getByDate(date);
 }

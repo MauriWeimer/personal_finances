@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
-import '../date_data_source.dart';
-import '../../mapping/date_mapper.dart';
+import './dates_remote_data_source.dart';
+import '../../mapping/dates_mapper.dart';
 
-class DateFirestoreDataSource implements DateDataSource {
+class DatesFirestoreDataSource implements DatesRemoteDataSource {
   final FirebaseFirestore _firebaseFirestore;
 
-  const DateFirestoreDataSource(this._firebaseFirestore);
+  const DatesFirestoreDataSource(this._firebaseFirestore);
 
   @override
   Future<List<Date>> getDates() => _firebaseFirestore
@@ -18,7 +18,7 @@ class DateFirestoreDataSource implements DateDataSource {
           .get()
           .then(
         (snapshot) {
-          final firstDate = DateMapper.dateFromFirestore(snapshot);
+          final firstDate = DatesMapper.dateFromFirestore(snapshot);
           final now = DateTime.now();
 
           var nextDate = Date(year: firstDate.year, month: firstDate.month);

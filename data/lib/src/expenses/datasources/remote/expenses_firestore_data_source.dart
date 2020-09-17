@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
-import '../expenses_data_source.dart';
+import './expenses_remote_data_source.dart';
 import '../../mapping/expenses_mapper.dart';
 
-class ExpensesFirestoreDataSource implements ExpensesDataSource {
+class ExpensesFirestoreDataSource implements ExpensesRemoteDataSource {
   final FirebaseFirestore _firebaseFirestore;
 
   const ExpensesFirestoreDataSource(this._firebaseFirestore);

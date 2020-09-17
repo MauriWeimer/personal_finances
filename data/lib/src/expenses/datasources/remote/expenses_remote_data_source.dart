@@ -1,5 +1,5 @@
 import 'package:domain/domain.dart';
 
-abstract class ExpensesDataSource {
+abstract class ExpensesRemoteDataSource {
   Stream<Expenses> getByDate(Date date);
 }

@@ -1,5 +1,5 @@
 import '../../dates/valueobjects/date.dart';
-import './expense.dart';
+import '../entities/expense.dart';
 
 class Expenses {
   final double total;
@@ -35,10 +35,7 @@ class Expenses {
       statistics[key] = expenses
               .where((expense) =>
                   expense.date.day >= firstDay && expense.date.day <= lastDay)
-              .fold(
-                0,
-                (total, expense) => total + expense.value,
-              ) /
+              .fold(0, (total, expense) => total + expense.value) /
           total;
     }
 
@@ -46,7 +43,7 @@ class Expenses {
   }
 }
 
-//TODO: mover
+//TODO: mover, NO DEBE HABER LOGICA DE PRESENTACION ... LA VISTA ES LA UE SE ENCARGA DE COMO FORMATEAR LOS NUMEROS POR EJ
 extension on int {
   String get twoDigits =>
       '${(this < 10) ? this.toString().padLeft(2, '0') : this} ';

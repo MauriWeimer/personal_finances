@@ -1,12 +1,12 @@
 import 'package:domain/domain.dart';
 
-import '../datasources/date_data_source.dart';
+import '../datasources/remote/dates_remote_data_source.dart';
 
 class DatesRepositoryImpl implements DatesRepository {
-  final DateDataSource _dateDataSource;
+  final DatesRemoteDataSource _dateRemoteDataSource;
 
-  const DatesRepositoryImpl(this._dateDataSource);
+  const DatesRepositoryImpl(this._dateRemoteDataSource);
 
   @override
-  Future<List<Date>> getDates() => _dateDataSource.getDates();
+  Future<List<Date>> getDates() => _dateRemoteDataSource.getDates();
 }

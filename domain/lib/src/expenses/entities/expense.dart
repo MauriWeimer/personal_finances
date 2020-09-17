@@ -1,5 +1,5 @@
 import '../../dates/valueobjects/date.dart';
-import '../valueobjects/category.dart';
+import '../../categories/entities/category.dart';
 
 class Expense {
   final Date date;

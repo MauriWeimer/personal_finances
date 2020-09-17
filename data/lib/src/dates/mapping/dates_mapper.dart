@@ -3,9 +3,9 @@ import 'package:domain/domain.dart';
 
 import '../models/date_model.dart';
 
-class DateMapper {
+class DatesMapper {
   static Date dateFromFirestore(QuerySnapshot snapshot) => dateFromModel(
-        dateModelFromMap(snapshot.docs.first.data()),
+        DateModel.fromMap(snapshot.docs.first.data()),
       );
 
   static Date dateFromModel(DateModel model) => Date(
@@ -13,11 +13,4 @@ class DateMapper {
         month: model.month,
         day: model.day,
       );
-      
-  static DateModel dateModelFromMap(Map<String, dynamic> map) => DateModel(
-        year: map['year'],
-        month: map['month'],
-        day: map['day'],
-      );
-
 }

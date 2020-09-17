@@ -1,5 +1,5 @@
 import 'package:domain/domain.dart';
 
-abstract class DateDataSource {
+abstract class DatesRemoteDataSource {
   Future<List<Date>> getDates();
 }

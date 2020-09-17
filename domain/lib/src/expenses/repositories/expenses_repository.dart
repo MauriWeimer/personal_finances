@@ -1,4 +1,4 @@
-import '../entities/expenses.dart';
+import '../valueobjects/expenses.dart';
 import '../../dates/valueobjects/date.dart';
 
 abstract class ExpensesRepository {
