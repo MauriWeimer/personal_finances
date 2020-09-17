@@ -14,8 +14,8 @@ class SuccesState implements HomeState {
   });
 
   @override
-  Result map<Result extends Object>({
-    Result Function(SuccesState state) success,
+  Result map<Result extends Object>(
+    Result Function(SuccesState state) success, {
     Result Function() empty,
   }) {
     assert(success != null);

@@ -18,7 +18,7 @@ class HomeBloc extends Bloc<HomeState> {
           if (expenses.expenses.isEmpty)
             emit(HomeState.empty());
           else
-            emit(HomeState.success(
+            emit(HomeState(
               totalExpenses: expenses.total,
               statistics: expenses.statistics,
               perDay: expenses.perDay,

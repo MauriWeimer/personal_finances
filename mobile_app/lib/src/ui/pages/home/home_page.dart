@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                         child: CircularProgressIndicator(),
                       ),
                       builder: (_, state) => state.map(
-                        success: (state) => _body(state),
+                        (state) => _body(state),
                         empty: () => Center(child: Text('empty')),
                       ),
                     ),
