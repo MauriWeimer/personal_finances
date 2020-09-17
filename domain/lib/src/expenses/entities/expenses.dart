@@ -1,4 +1,4 @@
-import '../../date/valueobjects/date.dart';
+import '../../dates/valueobjects/date.dart';
 import './expense.dart';
 
 class Expenses {

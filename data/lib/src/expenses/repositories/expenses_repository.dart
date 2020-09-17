@@ -2,22 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
 import '../mapping/expenses_mapper.dart';
+import '../datasources/expenses_data_source.dart';
 
 class ExpensesRepositoryImpl implements ExpensesRepository {
-  final FirebaseFirestore _firebaseFirestore;
+  final ExpensesDataSource _expensesDataSource;
 
-  ExpensesRepositoryImpl(this._firebaseFirestore);
+  const ExpensesRepositoryImpl(this._expensesDataSource);
 
   @override
-  Stream<Expenses> getByDate(Date date) async* {
-    yield* _firebaseFirestore
-        .collection('expenses')
-        .where('year', isEqualTo: date.year)
-        .where('month', isEqualTo: date.month)
-        .orderBy('day', descending: true)
-        .snapshots()
-        .map(
-          (snapshot) => ExpensesMapper.expensesFromFirestore(snapshot),
-        );
-  }
+  Stream<Expenses> getByDate(Date date) => _expensesDataSource.getByDate(date);
 }

@@ -1,4 +1,4 @@
-import '../../date/valueobjects/date.dart';
+import '../../dates/valueobjects/date.dart';
 import '../entities/expenses.dart';
 import '../repositories/expenses_repository.dart';
 

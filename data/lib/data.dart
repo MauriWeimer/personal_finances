@@ -1,4 +1,4 @@
 library data;
 
-export './src/dates/export.dart';
-export './src/expenses/export.dart';
+export './src/dates/dates.dart';
+export './src/expenses/expenses.dart';
