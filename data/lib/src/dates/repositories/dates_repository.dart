@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
-import '../dto/date_dto.dart';
+import '../mapping/date_mapper.dart';
 
 class DatesRepositoryImpl implements DatesRepository {
   final FirebaseFirestore _firebaseFirestore;
@@ -17,7 +17,7 @@ class DatesRepositoryImpl implements DatesRepository {
           .get()
           .then(
         (snapshot) {
-          final firstDate = DateDto.fromFirestore(snapshot).toDomain();
+          final firstDate = DateMapper.dateFromFirestore(snapshot);
           final now = DateTime.now();
 
           var nextDate = Date(year: firstDate.year, month: firstDate.month);

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
-import '../dto/expenses_dto.dart';
+import '../mapping/expenses_mapper.dart';
 
 class ExpensesRepositoryImpl implements ExpensesRepository {
   final FirebaseFirestore _firebaseFirestore;
@@ -17,7 +17,7 @@ class ExpensesRepositoryImpl implements ExpensesRepository {
         .orderBy('day', descending: true)
         .snapshots()
         .map(
-          (snapshot) => ExpensesDto.fromFirestore(snapshot).toDomain(),
-        );    
+          (snapshot) => ExpensesMapper.expensesFromFirestore(snapshot),
+        );
   }
 }
