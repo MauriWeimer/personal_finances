@@ -13,14 +13,11 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   );
 
   @override
-  Future<List<Category>> getLocalCategories() =>
-      _categoriesLocalDataSource.getCategories();
+  List<Category> getCategories() => _categoriesLocalDataSource.getCategories();
 
   @override
-  Future<List<Category>> getRemoteCategories() =>
-      _categoriesRemoteDataSource.getCategories();
-
-  @override
-  Future<bool> saveCategories(List<Category> categories) =>
-      _categoriesLocalDataSource.saveCategories(categories);
+  Future<bool> saveCategories() =>
+      _categoriesRemoteDataSource.getCategories().then(
+            (models) => _categoriesLocalDataSource.saveCategories(models),
+          );
 }

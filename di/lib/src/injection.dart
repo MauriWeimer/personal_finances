@@ -2,14 +2,18 @@ import 'package:get_it/get_it.dart';
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final g = GetIt.instance;
 
 Future<void> init() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   //Firestore
-  g.registerLazySingleton(
-    () => FirebaseFirestore.instance,
-  );
+  g.registerSingleton(FirebaseFirestore.instance);
+
+  //SharedPreferences
+  g.registerSingleton(sharedPreferences);
 
   //Datasources
   g.registerLazySingleton<DatesRemoteDataSource>(
@@ -22,7 +26,7 @@ Future<void> init() async {
     () => CategoriesFirestoreDataSource(g()),
   );
   g.registerLazySingleton<CategoriesLocalDataSource>(
-    () => CategoriesHiveDataSource(),
+    () => CategoriesPreferencesDataSource(g()),
   );
 
   //Repositories

@@ -4,11 +4,16 @@ import 'package:domain/domain.dart';
 import '../models/category_model.dart';
 
 class CategoriesMapper {
-  static List<Category> categoriesFromFirestore(QuerySnapshot snapshot) =>
+  static List<CategoryModel> modelsFromFirestore(QuerySnapshot snapshot) =>
       snapshot.docs
-          .map((doc) => categoryFromModel(CategoryModel.fromMap(doc.data())))
-          .toList();
+          .map((doc) => CategoryModel.fromMap(doc.data()))
+          .toList();   
 
   static Category categoryFromModel(CategoryModel model) =>
       Category(name: model.name, icon: null);
+
+  static CategoryModel categoryToModel(Category entity) => CategoryModel(
+        name: entity.name,
+        icon: null,
+      );
 }

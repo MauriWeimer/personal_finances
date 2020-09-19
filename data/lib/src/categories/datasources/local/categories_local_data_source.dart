@@ -1,6 +1,8 @@
 import 'package:domain/domain.dart';
 
+import '../../models/category_model.dart';
+
 abstract class CategoriesLocalDataSource {
-  Future<List<Category>> getCategories();
-  Future<bool> saveCategories(List<Category> categories);
+  List<Category> getCategories();
+  Future<bool> saveCategories(List<CategoryModel> categories);
 }

@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart' show Icons, IconData;
-
 class Category {
   final String name;
-  final IconData icon;
+  final String icon;
 
   const Category({this.name, this.icon});
 

@@ -4,7 +4,7 @@ import 'package:di/di.dart' as di;
 
 import 'src/navigator/routes.dart';
 import 'src/ui/theme/style.dart';
- 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -13,7 +13,7 @@ void main() async {
 
   runApp(MyApp());
 }
- 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

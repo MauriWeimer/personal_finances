@@ -7,6 +7,5 @@ class GetCategories {
 
   const GetCategories(this._categoriesRepository);
 
-  Future<List<Category>> execute() =>
-      _categoriesRepository.getLocalCategories();
+  List<Category> execute() => _categoriesRepository.getCategories();
 }

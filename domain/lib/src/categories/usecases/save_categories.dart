@@ -5,7 +5,5 @@ class SaveCategories {
 
   const SaveCategories(this._categoriesRepository);
 
-  Future<bool> execute() => _categoriesRepository.getRemoteCategories().then(
-        (categories) => _categoriesRepository.saveCategories(categories),
-      );
+  Future<bool> execute() => _categoriesRepository.saveCategories();
 }
