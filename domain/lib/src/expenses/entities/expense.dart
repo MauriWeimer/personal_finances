@@ -7,5 +7,5 @@ class Expense {
   final double value;
   final String description;
 
-  Expense({this.date, this.category, this.value, this.description});
+  Expense({this.date, this.category, this.value, this.description});  
 }

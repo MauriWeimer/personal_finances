@@ -34,7 +34,7 @@ Future<void> init() async {
     () => DatesRepositoryImpl(g()),
   );
   g.registerLazySingleton<ExpensesRepository>(
-    () => ExpensesRepositoryImpl(g()),
+    () => ExpensesRepositoryImpl(g(), g()),
   );
   g.registerLazySingleton<CategoriesRepository>(
     () => CategoriesRepositoryImpl(g(), g()),

@@ -10,13 +10,17 @@ class ExpensesFirestoreDataSource implements ExpensesRemoteDataSource {
   const ExpensesFirestoreDataSource(this._firebaseFirestore);
 
   @override
-  Stream<Expenses> getByDate(Date date) => _firebaseFirestore
-      .collection('expenses')
-      .where('year', isEqualTo: date.year)
-      .where('month', isEqualTo: date.month)
-      .orderBy('day', descending: true)
-      .snapshots()
-      .map(
-        (snapshot) => ExpensesMapper.expensesFromFirestore(snapshot),
-      );
+  Stream<Expenses> getByDate(Date date, List<Category> categories) =>
+      _firebaseFirestore
+          .collection('expenses')
+          .where('year', isEqualTo: date.year)
+          .where('month', isEqualTo: date.month)
+          .orderBy('day', descending: true)
+          .snapshots()
+          .map(
+            (snapshot) => ExpensesMapper.expensesFromFirestore(
+              snapshot,
+              categories,
+            ),
+          );
 }

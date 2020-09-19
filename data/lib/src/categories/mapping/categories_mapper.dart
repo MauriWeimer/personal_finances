@@ -6,14 +6,15 @@ import '../models/category_model.dart';
 class CategoriesMapper {
   static List<CategoryModel> modelsFromFirestore(QuerySnapshot snapshot) =>
       snapshot.docs
-          .map((doc) => CategoryModel.fromMap(doc.data()))
-          .toList();   
+          .map((doc) => CategoryModel.fromMap(doc.data()).copyWithId(doc.id))
+          .toList();
 
   static Category categoryFromModel(CategoryModel model) =>
-      Category(name: model.name, icon: null);
+      Category(id: model.id, name: model.name, icon: model.icon);
 
   static CategoryModel categoryToModel(Category entity) => CategoryModel(
+        id: entity.id,
         name: entity.name,
-        icon: null,
+        icon: entity.icon,
       );
 }
