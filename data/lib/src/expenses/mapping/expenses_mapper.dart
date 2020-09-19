@@ -45,4 +45,11 @@ class ExpensesMapper {
         value: model.value,
         description: model.description,
       );
+
+  static ExpenseModel expenseToModel(Expense entity) => ExpenseModel(
+        date: DatesMapper.dateToModel(entity.date),
+        category: entity.category.id,
+        value: entity.value,
+        description: entity.description,
+      );
 }

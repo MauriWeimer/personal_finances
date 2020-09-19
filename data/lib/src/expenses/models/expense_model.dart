@@ -24,4 +24,13 @@ class ExpenseModel {
         value: (map['value'] as num).toDouble(),
         description: map['description'],
       );
+
+  Map<String, dynamic> toMap() => {
+        'category': category,
+        'year': date.year,
+        'month': date.month,
+        'day': date.day,
+        'value': value,
+        'description': description,
+      };
 }

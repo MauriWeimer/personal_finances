@@ -1,4 +1,7 @@
+import 'package:application/application.dart';
+import 'package:di/di.dart';
 import 'package:flutter/material.dart';
+import 'package:presentation_core/presentation.dart';
 
 import '../../theme/style.dart';
 import '../../widgets/lateral_menu/lateral_menu.dart';
@@ -10,31 +13,45 @@ class AddExpensesPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Row(
-          children: [
-            LateralMenu(
-              bottomButton: MenuButton(
-                backgroundColor: kScaffoldBackgroundColor,
-                icon: Icon(
-                  Icons.chevron_left,
-                  color: kPrimaryColor,
-                ),
-                onTap: () => Navigator.of(context).pop(),
+        child: BlocProvider<AddExpenseBloc>(
+          create: (_) => AddExpenseBloc(g(), g()),
+          child: Row(
+            children: [
+              Builder(
+                builder: (context) {
+                  final bloc = BlocProvider.of<AddExpenseBloc>(context);
+                  final categories = bloc.getCategories();
+
+                  bloc.category = categories.last;
+
+                  return LateralMenu(
+                    bottomButton: MenuButton(
+                      backgroundColor: kScaffoldBackgroundColor,
+                      icon: Icon(
+                        Icons.chevron_left,
+                        color: kPrimaryColor,
+                      ),
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                    children: List.generate(
+                      categories.length,
+                      (i) => Text(
+                        categories[i].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    initialIndex: categories.length - 1,
+                    onIndexChanged: (i) => bloc.category = categories[i],
+                  );
+                },
               ),
-              children: [
-                Text('Categoria'),
-                Text('Categoria'),
-                Text('Categoria'),
-                Text('Categoria'),
-                Text('Categoria'),
-              ],
-              initialIndex: 1,
-              onIndexChanged: (item) => print('item: $item'),
-            ),
-            Expanded(
-              child: _body(),
-            ),
-          ],
+              Expanded(
+                child: _body(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -61,19 +78,26 @@ class AddExpensesPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'September',
-              style: TextStyle(
-                fontSize: 26.0,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 2.0,
-              ),
-            ),
-            Text(
-              'Monday 14',
-              style: TextStyle(
-                fontSize: 18.0,
-                letterSpacing: 3.0,
+            BlocBuilder<AddExpenseBloc, AddExpenseState>(
+              unsubscribeWhen: (state) => state.date != null,
+              builder: (_, state) => Column(
+                children: [
+                  Text(
+                    '${state.date.month}',
+                    style: TextStyle(
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 2.0,
+                    ),
+                  ),
+                  Text(
+                    '${state.date.day}',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      letterSpacing: 3.0,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -99,28 +123,36 @@ class AddExpensesPage extends StatelessWidget {
                 fontSize: 18.0,
               ),
             ),
-            Text(
-              '\$${200.987.toStringAsFixed(2)}',
-              style: TextStyle(
-                fontSize: 32.0,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 2.0,
+            BlocConsumer<AddExpenseBloc, AddExpenseState>(
+              listener: (context, state) {
+                if (state.added) Navigator.pop(context);
+              },
+              builder: (_, state) => Text(
+                '\$${(state.value / 100).toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2.0,
+                ),
               ),
             ),
             SizedBox(
               height: 32.0,
             ),
-            //TODO: Agregar descripcion
-            TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: 'Description',
-                labelStyle: TextStyle(
-                  color: kTextColor,
+            Builder(
+              builder: (context) => TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText: 'Description',
+                  labelStyle: TextStyle(
+                    color: kTextColor,
+                  ),
                 ),
-              ),
-              style: TextStyle(
-                fontSize: 16.0,
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+                onChanged: (value) => BlocProvider.of<AddExpenseBloc>(context)
+                    .description = value,
               ),
             ),
           ],

@@ -5,6 +5,8 @@ import './expenses_remote_data_source.dart';
 import '../../mapping/expenses_mapper.dart';
 
 class ExpensesFirestoreDataSource implements ExpensesRemoteDataSource {
+  static const _collection = 'expenses';
+
   final FirebaseFirestore _firebaseFirestore;
 
   const ExpensesFirestoreDataSource(this._firebaseFirestore);
@@ -12,7 +14,7 @@ class ExpensesFirestoreDataSource implements ExpensesRemoteDataSource {
   @override
   Stream<Expenses> getByDate(Date date, List<Category> categories) =>
       _firebaseFirestore
-          .collection('expenses')
+          .collection(_collection)
           .where('year', isEqualTo: date.year)
           .where('month', isEqualTo: date.month)
           .orderBy('day', descending: true)
@@ -23,4 +25,10 @@ class ExpensesFirestoreDataSource implements ExpensesRemoteDataSource {
               categories,
             ),
           );
+
+  @override
+  Future<bool> addExpense(Expense expense) => _firebaseFirestore
+      .collection(_collection)
+      .add(ExpensesMapper.expenseToModel(expense).toMap())
+      .then((_) => true);
 }

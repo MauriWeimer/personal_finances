@@ -1,5 +1,7 @@
+import 'package:application/application.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:presentation_core/presentation.dart';
 
 import '../../../theme/style.dart';
 
@@ -12,35 +14,35 @@ class Numpad extends StatelessWidget {
         children: [
           TableRow(
             children: [
-              _numberButton(1),
-              _numberButton(2),
-              _numberButton(3),
+              _numberButton(context, 1),
+              _numberButton(context, 2),
+              _numberButton(context, 3),
             ],
           ),
           TableRow(
             children: [
-              _numberButton(4),
-              _numberButton(5),
-              _numberButton(6),
+              _numberButton(context, 4),
+              _numberButton(context, 5),
+              _numberButton(context, 6),
             ],
           ),
           TableRow(
             children: [
-              _numberButton(7),
-              _numberButton(8),
-              _numberButton(9),
+              _numberButton(context, 7),
+              _numberButton(context, 8),
+              _numberButton(context, 9),
             ],
           ),
           TableRow(
             children: [
               _iconButton(
                 Icons.backspace,
-                () {},
+                BlocProvider.of<AddExpenseBloc>(context).decrement,
               ),
-              _numberButton(0),
+              _numberButton(context, 0),
               _iconButton(
                 Icons.add,
-                () {},
+                BlocProvider.of<AddExpenseBloc>(context).addExpense,
                 kPrimaryColor,
               ),
             ],
@@ -50,7 +52,7 @@ class Numpad extends StatelessWidget {
     );
   }
 
-  Widget _numberButton(int number) => AspectRatio(
+  Widget _numberButton(BuildContext context, int number) => AspectRatio(
         aspectRatio: 1.0,
         child: InkWell(
           child: Center(
@@ -66,7 +68,7 @@ class Numpad extends StatelessWidget {
           onTap: () {
             HapticFeedback.lightImpact();
 
-            //TODO: implement numberButton tap
+            BlocProvider.of<AddExpenseBloc>(context).increment(number);
           },
         ),
       );

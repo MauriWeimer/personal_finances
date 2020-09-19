@@ -17,4 +17,8 @@ class ExpensesRepositoryImpl implements ExpensesRepository {
         date,
         _categoriesLocalDataSource.getCategories(),
       );
+
+  @override
+  Future<bool> addExpense(Expense expense) =>
+      _expensesRemoteDataSource.addExpense(expense);
 }

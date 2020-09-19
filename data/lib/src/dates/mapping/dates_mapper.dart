@@ -13,4 +13,10 @@ class DatesMapper {
         month: model.month,
         day: model.day,
       );
+
+  static DateModel dateToModel(Date entity) => DateModel(
+        year: entity.year,
+        month: entity.month,
+        day: entity.day,
+      );
 }

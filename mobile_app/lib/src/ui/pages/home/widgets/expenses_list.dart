@@ -112,14 +112,15 @@ class ExpensesList extends StatelessWidget {
                         fontSize: 12.0,
                       ),
                     ),
-                    Text(
-                      expense.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                    if (expense.description?.isNotEmpty ?? false)
+                      Text(
+                        expense.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -128,7 +129,7 @@ class ExpensesList extends StatelessWidget {
               heightFactor: 1.0,
               child: Center(
                 child: Text(
-                  '\$${expense.value}',
+                  '\$${expense.value.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

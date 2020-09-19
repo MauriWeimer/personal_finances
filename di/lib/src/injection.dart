@@ -45,6 +45,9 @@ Future<void> init() async {
     () => GetAllDates(g()),
   );
   g.registerLazySingleton(
+    () => AddExpense(g()),
+  );
+  g.registerLazySingleton(
     () => GetExpensesByDate(g()),
   );
   g.registerLazySingleton(
