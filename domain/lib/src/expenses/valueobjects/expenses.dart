@@ -29,7 +29,7 @@ class Expenses {
     final statistics = <String, double>{};
     for (var i = 1; i <= bars; i++) {
       final firstDay = i * groupDays - groupDays + 1;
-      final lastDay = (i == bars) ? daysInMonth : i * groupDays + 1;
+      final lastDay = (i == bars) ? daysInMonth : i * groupDays;
       final key = firstDay.twoDigits + ' - ' + lastDay.twoDigits;
 
       statistics[key] = expenses
