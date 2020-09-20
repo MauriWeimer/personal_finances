@@ -3,7 +3,9 @@ import 'package:domain/domain.dart';
 import './home_state.dart';
 
 class EmptyState implements HomeState {
-  const EmptyState();
+  final List<Date> dates;
+
+  const EmptyState({this.dates});
 
   @override
   Result map<Result extends Object>(

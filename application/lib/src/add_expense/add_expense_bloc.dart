@@ -7,12 +7,11 @@ export './add_expense_state.dart';
 class AddExpenseBloc extends Bloc<AddExpenseState> {
   final GetCategories _getCategories;
   final AddExpense _addExpense;
-  Category _currentCategory;
-  String _description;
 
   AddExpenseBloc(this._getCategories, this._addExpense)
       : super(
           AddExpenseState(
+            categories: _getCategories.execute(),
             value: 0,
             date: Date(
               year: DateTime.now().year,
@@ -23,10 +22,12 @@ class AddExpenseBloc extends Bloc<AddExpenseState> {
           ),
         );
 
-  List<Category> getCategories() => _getCategories.execute();
-
-  set category(Category category) => _currentCategory = category;
-  set description(String description) => _description = description;
+  void categoryIndex(int i) => emit(state.copyWith(
+        currentCategory: state.categories[i],
+      ));
+  set description(String description) => emit(state.copyWith(
+        description: description,
+      ));
 
   void increment(int number) =>
       emit(state.copyWith(value: state.value * 10 + number));
@@ -38,9 +39,9 @@ class AddExpenseBloc extends Bloc<AddExpenseState> {
           _addExpense.execute(
             Expense(
               date: state.date,
-              category: _currentCategory,
+              category: state.currentCategory,
               value: state.value / 100,
-              description: _description,
+              description: state.description,
             ),
           ),
         ),

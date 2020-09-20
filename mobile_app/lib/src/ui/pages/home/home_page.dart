@@ -16,48 +16,65 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider<HomeBloc>(
           create: (_) => HomeBloc(g(), g()),
-          child: Builder(
-            builder: (context) {
-              final bloc = BlocProvider.of<HomeBloc>(context);
+          child: Row(
+            children: [
+              BlocBuilder<HomeBloc, HomeState>(
+                unsubscribeWhen: (state) {
+                  final result = state?.dates?.isNotEmpty ?? false;
+                  print(
+                      '\n------------------------\nunsuscribing menu: $result\n------------------------\n');
+                  return result;
+                },
+                loadingBuilder: (_) {
+                  print(
+                      '\n------------------------\nbuilding loading menu\n------------------------\n');
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                builder: (context, state) {
+                  print(
+                      '\n------------------------\nbuilding menu\n------------------------\n');
+                  return _menu(context, state.dates);
+                },
+              ),
+              Expanded(
+                child: BlocBuilder<HomeBloc, HomeState>(
+                  buildWhen: (_, current) {
+                    final result = current.map(
+                      (state) => state.totalExpenses != null,
+                      empty: () => true,
+                    );
 
-              return Row(
-                children: [
-                  FutureBuilder<List<Date>>(
-                    future: bloc.getDates(),
-                    builder: (_, snapshot) {
-                      if (!snapshot.hasData)
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-
-                      bloc.searchExpensesByDate(snapshot.data.last);
-
-                      return _menu(context, bloc, snapshot.data);
-                    },
-                  ),
-                  Expanded(
-                    child: BlocBuilder<HomeBloc, HomeState>(
-                      bloc: bloc,
-                      loadingBuilder: (_) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      builder: (_, state) => state.map(
-                        (state) => _body(state),
-                        empty: () => Center(child: Text('empty')),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
+                    print(
+                        '\n------------------------\nbuilding expenses: $result\n------------------------\n');
+                    return result;
+                  },
+                  loadingBuilder: (_) {
+                    print(
+                        '\n------------------------\nbuilding loading expenses\n------------------------\n');
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  builder: (_, state) {
+                    print(
+                        '\n------------------------\nbuilding expenses\n------------------------\n');
+                    return state.map(
+                      (state) => _body(state),
+                      empty: () => Center(child: Text('empty')),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _menu(BuildContext context, HomeBloc bloc, List<Date> dates) =>
-      LateralMenu(
+  Widget _menu(BuildContext context, List<Date> dates) => LateralMenu(
         topButton: MenuButton(
           icon: Icon(
             Icons.power_settings_new,
@@ -81,10 +98,11 @@ class HomePage extends StatelessWidget {
           ),
         ),
         initialIndex: dates.length - 1,
-        onIndexChanged: (value) => bloc.searchExpensesByDate(dates[value]),
+        onIndexChanged: (value) => BlocProvider.of<HomeBloc>(context)
+            .searchExpensesByDate(dates[value]),
       );
 
-  Widget _body(SuccesState data) => Padding(
+  Widget _body(SuccesState state) => Padding(
         padding: const EdgeInsets.fromLTRB(
           24.0,
           24.0,
@@ -101,7 +119,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Text(
-              '\$${data.totalExpenses}',
+              '\$${state.totalExpenses}',
               style: TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.w600,
@@ -112,14 +130,14 @@ class HomePage extends StatelessWidget {
               height: 32.0,
             ),
             BarsChart(
-              valueByGroup: data.statistics,
+              valueByGroup: state.statistics,
             ),
             SizedBox(
               height: 32.0,
             ),
             Expanded(
               child: ExpensesList(
-                expensesPerDay: data.perDay,
+                expensesPerDay: state.perDay,
               ),
             ),
           ],

@@ -17,13 +17,16 @@ class AddExpensesPage extends StatelessWidget {
           create: (_) => AddExpenseBloc(g(), g()),
           child: Row(
             children: [
-              Builder(
-                builder: (context) {
-                  final bloc = BlocProvider.of<AddExpenseBloc>(context);
-                  final categories = bloc.getCategories();
-
-                  bloc.category = categories.last;
-
+              BlocBuilder<AddExpenseBloc, AddExpenseState>(
+                unsubscribeWhen: (state) {
+                  final result = state.categories.isNotEmpty;
+                  print(
+                      '\n------------------------\nunsuscribing menu: $result\n------------------------\n');
+                  return result;
+                },
+                builder: (context, state) {
+                  print(
+                      '\n------------------------\nbuilding menu\n------------------------\n');
                   return LateralMenu(
                     bottomButton: MenuButton(
                       backgroundColor: kScaffoldBackgroundColor,
@@ -34,16 +37,17 @@ class AddExpensesPage extends StatelessWidget {
                       onTap: () => Navigator.of(context).pop(),
                     ),
                     children: List.generate(
-                      categories.length,
+                      state.categories.length,
                       (i) => Text(
-                        categories[i].name,
+                        state.categories[i].name,
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                     ),
-                    initialIndex: categories.length - 1,
-                    onIndexChanged: (i) => bloc.category = categories[i],
+                    initialIndex: state.categories.length - 1,
+                    onIndexChanged:
+                        BlocProvider.of<AddExpenseBloc>(context).categoryIndex,
                   );
                 },
               ),
@@ -79,26 +83,35 @@ class AddExpensesPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BlocBuilder<AddExpenseBloc, AddExpenseState>(
-              unsubscribeWhen: (state) => state.date != null,
-              builder: (_, state) => Column(
-                children: [
-                  Text(
-                    '${state.date.month}',
-                    style: TextStyle(
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 2.0,
+              unsubscribeWhen: (state) {
+                final result = state.date != null;
+                print(
+                    '\n------------------------\nunsuscribing date: $result\n------------------------\n');
+                return result;
+              },
+              builder: (_, state) {
+                print(
+                    '\n------------------------\nbuilding date\n------------------------\n');
+                return Column(
+                  children: [
+                    Text(
+                      '${state.date.month}',
+                      style: TextStyle(
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 2.0,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${state.date.day}',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      letterSpacing: 3.0,
+                    Text(
+                      '${state.date.day}',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        letterSpacing: 3.0,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              },
             ),
             SizedBox(
               height: 16.0,
@@ -124,17 +137,35 @@ class AddExpensesPage extends StatelessWidget {
               ),
             ),
             BlocConsumer<AddExpenseBloc, AddExpenseState>(
-              listener: (context, state) {
-                if (state.added) Navigator.pop(context);
+              listenWhen: (_, current) {
+                final result = current.added;
+                print(
+                    '\n------------------------\nlistening value: $result\n------------------------\n');
+                return result;
               },
-              builder: (_, state) => Text(
-                '\$${(state.value / 100).toStringAsFixed(2)}',
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 2.0,
-                ),
-              ),
+              listener: (context, state) {
+                print(
+                    '\n------------------------\nlistening value\n------------------------\n');
+                Navigator.pop(context);
+              },
+              buildWhen: (previous, current) {
+                final result = previous.value != current.value;
+                print(
+                    '\n------------------------\nbuilding value: $result\n------------------------\n');
+                return result;
+              },
+              builder: (_, state) {
+                print(
+                    '\n------------------------\nbuilding value\n------------------------\n');
+                return Text(
+                  '\$${(state.value / 100).toStringAsFixed(2)}',
+                  style: TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 2.0,
+                  ),
+                );
+              },
             ),
             SizedBox(
               height: 32.0,

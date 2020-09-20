@@ -38,6 +38,7 @@ class _LateralMenuState extends State<LateralMenu> {
     super.initState();
 
     currentIndex = widget.initialIndex;
+    widget.onIndexChanged(currentIndex);
 
     pageController = PageController(
       initialPage: currentIndex,
