@@ -6,69 +6,94 @@ import 'package:presentation_core/presentation.dart';
 import '../../theme/style.dart';
 import '../../widgets/lateral_menu/lateral_menu.dart';
 import 'widgets/numpad.dart';
+import '../../../extensions/date_time_extension.dart';
 
-class AddExpensesPage extends StatelessWidget {
+class AddExpensesPage extends StatefulWidget {
+  @override
+  _AddExpensesPageState createState() => _AddExpensesPageState();
+}
+
+class _AddExpensesPageState extends State<AddExpensesPage> {
+  FocusNode descriptionNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    descriptionNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    descriptionNode.unfocus();
+    descriptionNode.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: BlocProvider<AddExpenseBloc>(
-          create: (_) => AddExpenseBloc(g(), g()),
-          child: Row(
-            children: [
-              BlocBuilder<AddExpenseBloc, AddExpenseState>(
-                unsubscribeWhen: (state) {
-                  final result = state.categories.isNotEmpty;
-                  print(
-                      '\n------------------------\nunsuscribing menu: $result\n------------------------\n');
-                  return result;
-                },
-                builder: (context, state) {
-                  print(
-                      '\n------------------------\nbuilding menu\n------------------------\n');
-                  return LateralMenu(
-                    bottomButton: MenuButton(
-                      backgroundColor: kScaffoldBackgroundColor,
-                      icon: Icon(
-                        Icons.chevron_left,
-                        color: kPrimaryColor,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: SafeArea(
+          child: BlocProvider<AddExpenseBloc>(
+            create: (_) => AddExpenseBloc(g(), g()),
+            child: Row(
+              children: [
+                BlocBuilder<AddExpenseBloc, AddExpenseState>(
+                  unsubscribeWhen: (state) {
+                    final result = state.categories.isNotEmpty;
+                    print(
+                        '\n------------------------\nunsuscribing menu: $result\n------------------------\n');
+                    return result;
+                  },
+                  builder: (context, state) {
+                    print(
+                        '\n------------------------\nbuilding menu\n------------------------\n');
+                    return LateralMenu(
+                      bottomButton: MenuButton(
+                        backgroundColor: kScaffoldBackgroundColor,
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: kPrimaryColor,
+                        ),
+                        onTap: () => Navigator.of(context).pop(),
                       ),
-                      onTap: () => Navigator.of(context).pop(),
-                    ),
-                    children: List.generate(
-                      state.categories.length,
-                      (i) => Text(
-                        state.categories[i].name,
-                        style: TextStyle(
-                          color: Colors.white,
+                      children: List.generate(
+                        state.categories.length,
+                        (i) => Text(
+                          state.categories[i].name,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    initialIndex: state.categories.length - 1,
-                    onIndexChanged:
-                        BlocProvider.of<AddExpenseBloc>(context).categoryIndex,
-                  );
-                },
-              ),
-              Expanded(
-                child: _body(),
-              ),
-            ],
+                      initialIndex: state.categories.length - 1,
+                      onIndexChanged: BlocProvider.of<AddExpenseBloc>(context)
+                          .categoryIndex,
+                    );
+                  },
+                ),
+                Expanded(
+                  child: body(),
+                ),
+              ],
+            ),
           ),
         ),
+        onTap: () => descriptionNode.unfocus(),
       ),
     );
   }
 
-  Widget _body() => Column(
+  Widget body() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           header(),
-          expense(),
-          Expanded(
-            child: Numpad(),
-          ),
+          Expanded(child: expense()),
+          Numpad(),
         ],
       );
 
@@ -93,9 +118,10 @@ class AddExpensesPage extends StatelessWidget {
                 print(
                     '\n------------------------\nbuilding date\n------------------------\n');
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${state.date.month}',
+                      state.date.format('MMMM'),
                       style: TextStyle(
                         fontSize: 26.0,
                         fontWeight: FontWeight.w600,
@@ -103,7 +129,7 @@ class AddExpensesPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${state.date.day}',
+                      state.date.format('EEEE dd'),
                       style: TextStyle(
                         fontSize: 18.0,
                         letterSpacing: 3.0,
@@ -170,20 +196,28 @@ class AddExpensesPage extends StatelessWidget {
             SizedBox(
               height: 32.0,
             ),
-            Builder(
-              builder: (context) => TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelText: 'Description',
-                  labelStyle: TextStyle(
-                    color: kTextColor,
+            Expanded(
+              child: Builder(
+                builder: (context) => TextField(
+                  focusNode: descriptionNode,
+                  maxLines: null,
+                  expands: true,
+                  keyboardType: TextInputType.multiline,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    alignLabelWithHint: true,
+                    labelText: 'Description',
+                    labelStyle: TextStyle(
+                      color: kTextColor,
+                    ),
                   ),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                  onChanged: (value) => BlocProvider.of<AddExpenseBloc>(context)
+                      .description = value,
                 ),
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-                onChanged: (value) => BlocProvider.of<AddExpenseBloc>(context)
-                    .description = value,
               ),
             ),
           ],

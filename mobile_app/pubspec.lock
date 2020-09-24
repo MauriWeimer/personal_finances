@@ -152,7 +152,7 @@ packages:
     source: hosted
     version: "3.1.4"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"
@@ -234,7 +234,7 @@ packages:
       path: "../../core/presentation_core"
       relative: true
     source: path
-    version: "1.2.0"
+    version: "1.3.0"
   process:
     dependency: transitive
     description:

@@ -8,5 +8,5 @@ class DatesRepositoryImpl implements DatesRepository {
   const DatesRepositoryImpl(this._dateRemoteDataSource);
 
   @override
-  Future<List<Date>> getDates() => _dateRemoteDataSource.getDates();
+  Future<List<DateTime>> getDates() => _dateRemoteDataSource.getDates();
 }

@@ -13,7 +13,8 @@ class ExpensesRepositoryImpl implements ExpensesRepository {
   );
 
   @override
-  Stream<Expenses> getByDate(Date date) => _expensesRemoteDataSource.getByDate(
+  Stream<Expenses> getByDate(DateTime date) =>
+      _expensesRemoteDataSource.getByDate(
         date,
         _categoriesLocalDataSource.getCategories(),
       );

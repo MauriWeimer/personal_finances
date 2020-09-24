@@ -3,7 +3,7 @@ import 'package:domain/domain.dart';
 class AddExpenseState {
   final List<Category> categories;
   final Category currentCategory;
-  final Date date;
+  final DateTime date;
   final int value;
   final String description;
   final bool added;

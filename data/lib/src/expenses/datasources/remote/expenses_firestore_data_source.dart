@@ -12,7 +12,7 @@ class ExpensesFirestoreDataSource implements ExpensesRemoteDataSource {
   const ExpensesFirestoreDataSource(this._firebaseFirestore);
 
   @override
-  Stream<Expenses> getByDate(Date date, List<Category> categories) =>
+  Stream<Expenses> getByDate(DateTime date, List<Category> categories) =>
       _firebaseFirestore
           .collection(_collection)
           .where('year', isEqualTo: date.year)

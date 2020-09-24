@@ -13,11 +13,7 @@ class AddExpenseBloc extends Bloc<AddExpenseState> {
           AddExpenseState(
             categories: _getCategories.execute(),
             value: 0,
-            date: Date(
-              year: DateTime.now().year,
-              month: DateTime.now().month,
-              day: DateTime.now().day,
-            ),
+            date: DateTime.now(),
             added: false,
           ),
         );

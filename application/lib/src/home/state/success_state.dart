@@ -3,13 +3,15 @@ import 'package:domain/domain.dart';
 import './home_state.dart';
 
 class SuccesState implements HomeState {
-  final List<Date> dates;
+  final List<DateTime> dates;
+  final bool currentDate;
   final double totalExpenses;
   final Map<String, double> statistics;
-  final Map<Date, List<Expense>> perDay;
+  final Map<DateTime, List<Expense>> perDay;
 
   const SuccesState({
     this.dates,
+    this.currentDate,
     this.totalExpenses,
     this.statistics,
     this.perDay,

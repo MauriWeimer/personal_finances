@@ -1,4 +1,3 @@
-import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:application/application.dart';
 import 'package:presentation_core/presentation.dart';
@@ -8,6 +7,7 @@ import 'widgets/bars_chart.dart';
 import 'widgets/expenses_list.dart';
 import '../../widgets/lateral_menu/lateral_menu.dart';
 import '../../../navigator/routes.dart';
+import '../../../extensions/date_time_extension.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -19,52 +19,23 @@ class HomePage extends StatelessWidget {
           child: Row(
             children: [
               BlocBuilder<HomeBloc, HomeState>(
-                unsubscribeWhen: (state) {
-                  final result = state?.dates?.isNotEmpty ?? false;
-                  print(
-                      '\n------------------------\nunsuscribing menu: $result\n------------------------\n');
-                  return result;
-                },
-                loadingBuilder: (_) {
-                  print(
-                      '\n------------------------\nbuilding loading menu\n------------------------\n');
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-                builder: (context, state) {
-                  print(
-                      '\n------------------------\nbuilding menu\n------------------------\n');
-                  return _menu(context, state.dates);
-                },
+                unsubscribeWhen: (state) => state?.dates?.isNotEmpty ?? false,
+                loadingBuilder: (context) => _loadingMenu(context),
+                builder: (context, state) => _menu(context, state.dates),
               ),
               Expanded(
                 child: BlocBuilder<HomeBloc, HomeState>(
-                  buildWhen: (_, current) {
-                    final result = current.map(
-                      (state) => state.totalExpenses != null,
-                      empty: () => true,
-                    );
-
-                    print(
-                        '\n------------------------\nbuilding expenses: $result\n------------------------\n');
-                    return result;
-                  },
-                  loadingBuilder: (_) {
-                    print(
-                        '\n------------------------\nbuilding loading expenses\n------------------------\n');
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                  builder: (_, state) {
-                    print(
-                        '\n------------------------\nbuilding expenses\n------------------------\n');
-                    return state.map(
-                      (state) => _body(state),
-                      empty: () => Center(child: Text('empty')),
-                    );
-                  },
+                  buildWhen: (_, current) => current.map(
+                    (state) => state.totalExpenses != null,
+                    empty: () => true,
+                  ),
+                  loadingBuilder: (_) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  builder: (_, state) => state.map(
+                    (state) => _body(state),
+                    empty: () => Center(child: Text('empty')),
+                  ),
                 ),
               ),
             ],
@@ -74,13 +45,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _menu(BuildContext context, List<Date> dates) => LateralMenu(
-        topButton: MenuButton(
-          icon: Icon(
-            Icons.power_settings_new,
-            color: Colors.white,
-          ),
-        ),
+  Widget _menu(BuildContext context, List<DateTime> dates) => LateralMenu(
         bottomButton: MenuButton(
           icon: Icon(
             Icons.add,
@@ -91,7 +56,8 @@ class HomePage extends StatelessWidget {
         children: List.generate(
           dates.length,
           (i) => Text(
-            '${dates[i].year}\n${dates[i].month}',
+            '${dates[i].year}\n${dates[i].format('MMMM')}',
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -100,6 +66,27 @@ class HomePage extends StatelessWidget {
         initialIndex: dates.length - 1,
         onIndexChanged: (value) => BlocProvider.of<HomeBloc>(context)
             .searchExpensesByDate(dates[value]),
+      );
+
+  Widget _loadingMenu(BuildContext context) => LateralMenu(
+        bottomButton: MenuButton(
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onTap: () => Navigator.of(context).pushNamed(kAddExpensesRoute),
+        ),
+        children: List.generate(
+          10,
+          (i) => Text(
+            'loading',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        initialIndex: 10 - 1,
       );
 
   Widget _body(SuccesState state) => Padding(
@@ -119,7 +106,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Text(
-              '\$${state.totalExpenses}',
+              '\$${state.totalExpenses.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 32.0,
                 fontWeight: FontWeight.w600,
@@ -133,7 +120,49 @@ class HomePage extends StatelessWidget {
               valueByGroup: state.statistics,
             ),
             SizedBox(
+              height: 16.0,
+            ),
+            Expanded(
+              child: ExpensesList(
+                expensesPerDay: state.perDay,
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _loadingBody(SuccesState state) => Padding(
+        padding: const EdgeInsets.fromLTRB(
+          24.0,
+          24.0,
+          24.0,
+          0.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Total expenses',
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            Text(
+              '\$${state.totalExpenses.toStringAsFixed(2)}',
+              style: TextStyle(
+                fontSize: 32.0,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 2.0,
+              ),
+            ),
+            SizedBox(
               height: 32.0,
+            ),
+            BarsChart(
+              valueByGroup: state.statistics,
+            ),
+            SizedBox(
+              height: 16.0,
             ),
             Expanded(
               child: ExpensesList(

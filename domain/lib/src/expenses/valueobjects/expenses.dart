@@ -1,9 +1,9 @@
-import '../../dates/valueobjects/date.dart';
 import '../entities/expense.dart';
+import '../../core/extensions/date_time_extension.dart';
 
 class Expenses {
   final double total;
-  final Map<Date, List<Expense>> perDay;
+  final Map<DateTime, List<Expense>> perDay;
   final List<Expense> expenses;
 
   Expenses({this.expenses})
@@ -30,7 +30,7 @@ class Expenses {
     for (var i = 1; i <= bars; i++) {
       final firstDay = i * groupDays - groupDays + 1;
       final lastDay = (i == bars) ? daysInMonth : i * groupDays;
-      final key = firstDay.twoDigits + ' - ' + lastDay.twoDigits;
+      final key = '$firstDay - $lastDay';
 
       statistics[key] = expenses
               .where((expense) =>
@@ -41,10 +41,4 @@ class Expenses {
 
     return statistics;
   }
-}
-
-//TODO: mover, NO DEBE HABER LOGICA DE PRESENTACION ... LA VISTA ES LA UE SE ENCARGA DE COMO FORMATEAR LOS NUMEROS POR EJ
-extension on int {
-  String get twoDigits =>
-      '${(this < 10) ? this.toString().padLeft(2, '0') : this} ';
 }

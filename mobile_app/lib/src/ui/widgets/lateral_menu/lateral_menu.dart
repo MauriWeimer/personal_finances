@@ -1,16 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../theme/style.dart';
-import 'menu_button.dart';
+import './menu_button.dart';
+import './menu_scroll_physics.dart';
 
 export 'menu_button.dart';
 
-typedef OnIindexChanged = void Function(int item);
+typedef OnIndexChanged = void Function(int item);
 
 class LateralMenu extends StatefulWidget {
   final List<Widget> children;
   final int initialIndex;
-  final OnIindexChanged onIndexChanged;
+  final OnIndexChanged onIndexChanged;
   final MenuButton topButton;
   final MenuButton bottomButton;
 
@@ -28,7 +31,8 @@ class LateralMenu extends StatefulWidget {
   _LateralMenuState createState() => _LateralMenuState();
 }
 
-class _LateralMenuState extends State<LateralMenu> {
+class _LateralMenuState extends State<LateralMenu>
+    with AutomaticKeepAliveClientMixin<LateralMenu> {
   PageController pageController;
 
   int currentIndex;
@@ -38,7 +42,7 @@ class _LateralMenuState extends State<LateralMenu> {
     super.initState();
 
     currentIndex = widget.initialIndex;
-    widget.onIndexChanged(currentIndex);
+    widget.onIndexChanged?.call(currentIndex);
 
     pageController = PageController(
       initialPage: currentIndex,
@@ -55,6 +59,8 @@ class _LateralMenuState extends State<LateralMenu> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return SizedBox(
       width: 48.0,
       child: Material(
@@ -84,6 +90,9 @@ class _LateralMenuState extends State<LateralMenu> {
 
   Widget items() => PageView.builder(
         controller: pageController,
+        physics: (widget.onIndexChanged == null)
+            ? NeverScrollableScrollPhysics()
+            : MenuScrollPhysics(itemDimension: 0.2),
         scrollDirection: Axis.vertical,
         itemCount: widget.children.length,
         itemBuilder: (_, i) => RotatedBox(
@@ -101,4 +110,7 @@ class _LateralMenuState extends State<LateralMenu> {
           setState(() => currentIndex = i);
         },
       );
+
+  @override
+  bool get wantKeepAlive => widget.onIndexChanged != null;
 }

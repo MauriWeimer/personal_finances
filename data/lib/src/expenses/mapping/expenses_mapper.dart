@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:domain/domain.dart';
 
 import '../../dates/mapping/dates_mapper.dart';
-import '../../categories/mapping/categories_mapper.dart';
 import '../models/expense_model.dart';
 import '../models/expenses_model.dart';
 

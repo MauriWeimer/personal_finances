@@ -1,8 +1,7 @@
-import '../../dates/valueobjects/date.dart';
 import '../../categories/entities/category.dart';
 
 class Expense {
-  final Date date;
+  final DateTime date;
   final Category category;
   final double value;
   final String description;

@@ -1,4 +1,3 @@
-import '../../dates/valueobjects/date.dart';
 import '../valueobjects/expenses.dart';
 import '../repositories/expenses_repository.dart';
 
@@ -7,5 +6,6 @@ class GetExpensesByDate {
 
   const GetExpensesByDate(this._expensesRepository);
 
-  Stream<Expenses> execute(Date date) => _expensesRepository.getByDate(date);
+  Stream<Expenses> execute(DateTime date) =>
+      _expensesRepository.getByDate(date);
 }
