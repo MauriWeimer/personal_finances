@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../../theme/style.dart';
 import './menu_button.dart';
-import './menu_scroll_physics.dart';
 
 export 'menu_button.dart';
 
@@ -31,8 +28,7 @@ class LateralMenu extends StatefulWidget {
   _LateralMenuState createState() => _LateralMenuState();
 }
 
-class _LateralMenuState extends State<LateralMenu>
-    with AutomaticKeepAliveClientMixin<LateralMenu> {
+class _LateralMenuState extends State<LateralMenu> with AutomaticKeepAliveClientMixin<LateralMenu> {
   PageController pageController;
 
   int currentIndex;
@@ -92,7 +88,7 @@ class _LateralMenuState extends State<LateralMenu>
         controller: pageController,
         physics: (widget.onIndexChanged == null)
             ? NeverScrollableScrollPhysics()
-            : MenuScrollPhysics(itemDimension: 0.2),
+            : ClampingScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemCount: widget.children.length,
         itemBuilder: (_, i) => RotatedBox(

@@ -12,22 +12,26 @@ class HomeBloc extends Bloc<HomeState> {
     _getDates();
   }
 
-  //Retardo de 1 seg para ver loading
-
   void _getDates() => execute<List<DateTime>>(
-        useCase: Stream.fromFuture(Future.delayed(Duration(seconds: 1))
-            .then((_) => _getAllDates.execute())),
-        then: (dates) => emit(HomeState(dates: dates)),
+        useCase: Stream.fromFuture(_getAllDates.execute()),
+        then: (dates) => emit(HomeState(
+          dates: dates,
+          currentDate: true,
+        )),
       );
 
   void searchExpensesByDate(DateTime date) => execute<Expenses>(
         useCase: _getExpensesByDate.execute(date),
         then: (expenses) {
           if (expenses.expenses.isEmpty)
-            emit(HomeState.empty(dates: state.dates));
+            emit(HomeState.empty(
+              dates: state.dates,
+              currentDate: state.dates.last == date,
+            ));
           else
             emit(HomeState(
               dates: state.dates,
+              currentDate: state.dates.last == date,
               totalExpenses: expenses.total,
               statistics: expenses.statistics,
               perDay: expenses.perDay,

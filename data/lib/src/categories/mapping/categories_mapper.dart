@@ -9,12 +9,17 @@ class CategoriesMapper {
           .map((doc) => CategoryModel.fromMap(doc.data()).copyWithId(doc.id))
           .toList();
 
-  static Category categoryFromModel(CategoryModel model) =>
-      Category(id: model.id, name: model.name, icon: model.icon);
+  static Category categoryFromModel(CategoryModel model) => Category(
+      id: model.id,
+      name: model.name,
+      icon: int.parse(
+        model.icon,
+        radix: 16,
+      ));
 
   static CategoryModel categoryToModel(Category entity) => CategoryModel(
         id: entity.id,
         name: entity.name,
-        icon: entity.icon,
+        icon: '${entity.icon}',
       );
 }

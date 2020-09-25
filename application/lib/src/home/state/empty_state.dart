@@ -1,5 +1,3 @@
-import 'package:domain/domain.dart';
-
 import './home_state.dart';
 
 class EmptyState implements HomeState {

@@ -114,7 +114,7 @@ class ExpensesList extends StatelessWidget {
                   ),
                 ),
                 child: Icon(
-                  Icons.font_download,
+                  IconData(expense.category.icon, fontFamily: 'MaterialIcons'),
                   color: kPrimaryColor,
                 ),
               ),

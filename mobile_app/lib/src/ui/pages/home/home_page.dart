@@ -20,7 +20,10 @@ class HomePage extends StatelessWidget {
             children: [
               BlocBuilder<HomeBloc, HomeState>(
                 unsubscribeWhen: (state) => state?.dates?.isNotEmpty ?? false,
-                loadingBuilder: (context) => _loadingMenu(context),
+                loadingBuilder: (context) => Center(
+                  child: CircularProgressIndicator(),
+                ),
+                //TODO: deshabilitar boton si currentDate != state.dates.last
                 builder: (context, state) => _menu(context, state.dates),
               ),
               Expanded(
@@ -68,70 +71,7 @@ class HomePage extends StatelessWidget {
             .searchExpensesByDate(dates[value]),
       );
 
-  Widget _loadingMenu(BuildContext context) => LateralMenu(
-        bottomButton: MenuButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onTap: () => Navigator.of(context).pushNamed(kAddExpensesRoute),
-        ),
-        children: List.generate(
-          10,
-          (i) => Text(
-            'loading',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        initialIndex: 10 - 1,
-      );
-
   Widget _body(SuccesState state) => Padding(
-        padding: const EdgeInsets.fromLTRB(
-          24.0,
-          24.0,
-          24.0,
-          0.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Total expenses',
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-            ),
-            Text(
-              '\$${state.totalExpenses.toStringAsFixed(2)}',
-              style: TextStyle(
-                fontSize: 32.0,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 2.0,
-              ),
-            ),
-            SizedBox(
-              height: 32.0,
-            ),
-            BarsChart(
-              valueByGroup: state.statistics,
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            Expanded(
-              child: ExpensesList(
-                expensesPerDay: state.perDay,
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _loadingBody(SuccesState state) => Padding(
         padding: const EdgeInsets.fromLTRB(
           24.0,
           24.0,

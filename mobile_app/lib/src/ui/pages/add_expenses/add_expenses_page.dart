@@ -43,38 +43,41 @@ class _AddExpensesPageState extends State<AddExpensesPage> {
             child: Row(
               children: [
                 BlocBuilder<AddExpenseBloc, AddExpenseState>(
-                  unsubscribeWhen: (state) {
-                    final result = state.categories.isNotEmpty;
-                    print(
-                        '\n------------------------\nunsuscribing menu: $result\n------------------------\n');
-                    return result;
-                  },
-                  builder: (context, state) {
-                    print(
-                        '\n------------------------\nbuilding menu\n------------------------\n');
-                    return LateralMenu(
-                      bottomButton: MenuButton(
-                        backgroundColor: kScaffoldBackgroundColor,
-                        icon: Icon(
-                          Icons.chevron_left,
-                          color: kPrimaryColor,
-                        ),
-                        onTap: () => Navigator.of(context).pop(),
+                  unsubscribeWhen: (state) => state.categories.isNotEmpty,
+                  builder: (context, state) => LateralMenu(
+                    bottomButton: MenuButton(
+                      backgroundColor: kScaffoldBackgroundColor,
+                      icon: Icon(
+                        Icons.chevron_left,
+                        color: kPrimaryColor,
                       ),
-                      children: List.generate(
-                        state.categories.length,
-                        (i) => Text(
-                          state.categories[i].name,
-                          style: TextStyle(
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                    children: List.generate(
+                      state.categories.length,
+                      (i) => Row(
+                        children: [
+                          Icon(
+                            IconData(
+                              state.categories[i].icon,
+                              fontFamily: 'MaterialIcons',
+                            ),
                             color: Colors.white,
                           ),
-                        ),
+                          const SizedBox(width: 8.0),
+                          Text(
+                            state.categories[i].name,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      initialIndex: state.categories.length - 1,
-                      onIndexChanged: BlocProvider.of<AddExpenseBloc>(context)
-                          .categoryIndex,
-                    );
-                  },
+                    ),
+                    initialIndex: state.categories.length - 1,
+                    onIndexChanged:
+                        BlocProvider.of<AddExpenseBloc>(context).categoryIndex,
+                  ),
                 ),
                 Expanded(
                   child: body(),
@@ -108,36 +111,27 @@ class _AddExpensesPageState extends State<AddExpensesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BlocBuilder<AddExpenseBloc, AddExpenseState>(
-              unsubscribeWhen: (state) {
-                final result = state.date != null;
-                print(
-                    '\n------------------------\nunsuscribing date: $result\n------------------------\n');
-                return result;
-              },
-              builder: (_, state) {
-                print(
-                    '\n------------------------\nbuilding date\n------------------------\n');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.date.format('MMMM'),
-                      style: TextStyle(
-                        fontSize: 26.0,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 2.0,
-                      ),
+              unsubscribeWhen: (state) => state.date != null,
+              builder: (_, state) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    state.date.format('MMMM'),
+                    style: TextStyle(
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 2.0,
                     ),
-                    Text(
-                      state.date.format('EEEE dd'),
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        letterSpacing: 3.0,
-                      ),
+                  ),
+                  Text(
+                    state.date.format('EEEE dd'),
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      letterSpacing: 3.0,
                     ),
-                  ],
-                );
-              },
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 16.0,
@@ -163,35 +157,17 @@ class _AddExpensesPageState extends State<AddExpensesPage> {
               ),
             ),
             BlocConsumer<AddExpenseBloc, AddExpenseState>(
-              listenWhen: (_, current) {
-                final result = current.added;
-                print(
-                    '\n------------------------\nlistening value: $result\n------------------------\n');
-                return result;
-              },
-              listener: (context, state) {
-                print(
-                    '\n------------------------\nlistening value\n------------------------\n');
-                Navigator.pop(context);
-              },
-              buildWhen: (previous, current) {
-                final result = previous.value != current.value;
-                print(
-                    '\n------------------------\nbuilding value: $result\n------------------------\n');
-                return result;
-              },
-              builder: (_, state) {
-                print(
-                    '\n------------------------\nbuilding value\n------------------------\n');
-                return Text(
-                  '\$${(state.value / 100).toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 2.0,
-                  ),
-                );
-              },
+              listenWhen: (_, current) => current.added,
+              listener: (context, _) => Navigator.pop(context),
+              buildWhen: (previous, current) => previous.value != current.value,
+              builder: (_, state) => Text(
+                '\$${(state.value / 100).toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2.0,
+                ),
+              ),
             ),
             SizedBox(
               height: 32.0,
